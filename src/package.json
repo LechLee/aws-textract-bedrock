@@ -1,0 +1,21 @@
+{
+  "name": "textract-assistant",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "@aws-sdk/client-sts": "^3.529.1",
+    "@aws-sdk/client-bedrock-runtime": "^3.478.0",
+		"@aws-sdk/client-lex-runtime-service": "^3.478.0",
+		"@aws-sdk/client-textract": "^3.465.0",
+		"amazon-textract-response-parser": "^0.3.1"
+  }
+}
