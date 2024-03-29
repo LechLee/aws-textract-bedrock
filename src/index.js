@@ -1,19 +1,45 @@
-// import TextractServ from './service/textract.js'
-// import BedrockServ from './service/bedrock.js'
+import TextractServ from './service/textract.js'
+import BedrockServ from './service/bedrock.js'
 
 export async function handler(event) {
-	// const file = event.documentData;
+	const body = JSON.parse(event.body)
+	const document = body.document
+	// const parsed = await parser.parse(event);
 
-	// if (!file) {
-	// 	throw new Error('No documentData provided');
+	// const { content, filename, contentType } = parsed.files[0];
+
+	// if (!content) {
+	// 	console.error('No document provided')
+	console.info(JSON.stringify(event, null, 2))
+	console.info(document)
+	// 	return {
+	// 		statusCode: 400,
+	// 		body: JSON.stringify({
+	// 			message: 'No document provided'
+	// 		})
+	// 	}
 	// }
 
-	// const result = await TextractServ.analyzeDocument(file)
-	// const json = await BedrockServ.analyse(result)
+	const text = await TextractServ.analyzeDocument(document)
+
+	// if(!result || !result.raw){
+	// 	return {
+	// 		statusCode: 500,
+	// 		body: JSON.stringify({
+	// 			...result
+	// 		})
+	// 	}
+	// }
+	const json = await BedrockServ.analyse(text.raw)
+
 	return {
 		statusCode: 200,
 		body: JSON.stringify({
-			message: 'Success'
+			message: 'Success',
+			result: {
+				...text,
+				...json
+			}
 		})
 	}
 }

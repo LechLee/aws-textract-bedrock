@@ -30,7 +30,7 @@ export default {
 			// const documentData = await readFile(filePath)
 
 			// Create a buffer from the document data
-			const documentBuffer = Buffer.from(documentData)
+			const documentBuffer = Buffer.from(documentData, 'base64')
 
 			// Call AWS Textract to analyze the document
 			const analyzeDocumentCommand = new AnalyzeDocumentCommand({
@@ -50,9 +50,10 @@ export default {
 
 			// Print the raw text
 			console.log('Raw Text:', rawText)
-			return rawText
+			return Promise.resolve({raw : rawText})
 		} catch (error) {
 			console.error('Error:', error)
+			return Promise.reject(error)
 		}
 	}
 }

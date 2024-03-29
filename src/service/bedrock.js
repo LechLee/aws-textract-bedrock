@@ -42,6 +42,7 @@ export default {
 			}
 		})
 
-		return extractedText
+		// return {extracted : extractedText, prompt}
+		return extractedText[0]
 	}
 }
