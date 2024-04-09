@@ -3,12 +3,14 @@ import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedroc
 const client = new BedrockRuntimeClient({ region: 'us-east-1' })
 
 export default {
-	async analyse(nric) {
-		// const prompt = `Based on this raw text extract from a malaysia nric: ${nric}, extract is to json of {name : '', idNumber : '', address : '', gender : ''}`
-		const prompt = `Given a raw text extract from a Malaysian National Registration Identity Card (NRIC) represented as ${nric},
-		 returns it in a JSON format: {name: '', idNumber: '', address: '', gender: ''} only.
-		 Ensure that the extracted information corresponds to the relevant fields in the NRIC. 
-		 The NRIC format may include details such as the individual's name, identification number, address, and gender. Gender should be returned as either 'Male' or 'Female,' and it may be provided in Malay return empty if there. If any of the required information cannot be found in the given NRIC text, the corresponding field in the JSON should be returned as an empty string.`
+	async analyse(text, type = 'identity document') {
+		const prompt = `
+		 Given a raw text extracted as ${text}, return it in a JSON format of {name: '', idNumber: '', address: '', gender: '', mobile : {countryDialCd : '', number : ''}, email : ''} only.
+		 Ensure that the extracted information corresponds to the relevant fields. 
+		 Break the mobile number into countryDialCd and number, example {countryDialCd : '60', number : '173134123'}, remove the spacing or other symbols for the mobile number and do not use the example
+		 Gender should be returned as either 'Male' or 'Female,' and may be provided in other language, return it as empty string if is not found.
+		 If any of the required information cannot be found in the given text, the corresponding field in the JSON should be returned as an empty string, 
+		 Do not generate random names / reorder the names and the name must be in title case.`.trim()
 		const request = {
 			prompt,
 			maxTokens: 200
